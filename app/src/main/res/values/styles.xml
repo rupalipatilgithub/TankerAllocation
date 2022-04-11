@@ -1,0 +1,27 @@
+<resources>
+    <!-- Base application theme. -->
+   <!-- <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/stellar_explorer</item>
+        <item name="colorPrimaryDark">@color/stellar_explorer</item>
+        <item name="colorAccent">@color/sweet_white</item>
+        <!--<style name="AppTheme.RoundedCornerMaterialButton" parent="Widget.AppCompat.Button.Colored">
+            <item name="android:background">@drawable/ovalbutton</item>
+        </style>-->
+    </style>
+
+    <style name="ShapeAppearanceOverlay.MyApp.Button.Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/salsify_grass</item>
+    </style>
+
+
+
+
+</resources>
