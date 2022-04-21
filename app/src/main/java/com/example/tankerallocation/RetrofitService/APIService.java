@@ -10,7 +10,9 @@ import retrofit2.http.Body;
 
 public interface APIService {
 
+
     Call<JsonObject> userlogin(@Body JsonObject jsonObject);
+    Call<JsonObject> ImportData(@Body JsonObject jsonObject);
 
 
 }

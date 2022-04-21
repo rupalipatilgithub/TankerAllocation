@@ -13,11 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
-        android:text="@string/Deliverd"
+        android:text="@string/tankerallocaltion"
         android:textColor="@color/stellar_explorer"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="16dp" />

@@ -53,6 +53,60 @@
         android:id="@+id/tanker_det"
         android:name="com.example.tankerallocation.UI.TankerDetails"
         android:label="Tanker Allocation"
-        tools:layout="@layout/fragment_tanker_details"></fragment>
+        tools:layout="@layout/fragment_tanker_details">
+
+        <action
+            android:id="@+id/action_tanker_det_to_pdfview"
+            app:destination="@id/pdfview"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pdfview"
+        android:name="com.example.tankerallocation.UI.PdfViewer"
+        android:label="Tanker Allocation"
+        tools:layout="@layout/fragment_pdf_viewer">
+    </fragment>
+
+    <fragment
+        android:id="@+id/deliverydetails"
+        android:name="com.example.tankerallocation.UI.DisplaySuccessDelivery"
+        android:label="Delivery Details"
+        tools:layout="@layout/fragment_display_success_delivery">
+        <action
+            android:id="@+id/action_delivery_det_to_delivery_note"
+            app:destination="@id/delivery_note"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/delivery_note"
+        android:name="com.example.tankerallocation.UI.DeliveryNote"
+        android:label="Delivery Note"
+        tools:layout="@layout/fragment_delivery_note">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/camera"
+        android:name="com.example.tankerallocation.UI.CameraScreen"
+        android:label="Camera SCreen"
+        tools:layout="@layout/camera_screen">
+
+        <action
+            android:id="@+id/action_camerascreen_delivery_note"
+            app:destination="@id/delivery_note"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
 
 </navigation>

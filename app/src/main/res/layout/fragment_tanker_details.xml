@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.TankerDetails">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -14,12 +19,210 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Tanker Details"
+        android:text="Tanker Allocation"
         android:textColor="@color/stellar_explorer"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputlayout_token_number"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="@string/token_no"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColorHint="@color/purple_500"
+        app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:startIconDrawable="@drawable/token_icon"
+        app:startIconTint="@color/stellar_explorer"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_token_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:editable="false"
+            android:textColor="@color/stellar_explorer" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputlayout_cust_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/Cust_name"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColorHint="@color/purple_500"
+        app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
+        app:layout_constraintTop_toBottomOf="@+id/inputlayout_token_number"
+        app:startIconDrawable="@drawable/driver_icon"
+        app:startIconTint="@color/stellar_explorer"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_custname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:editable="false"
+            android:textColor="@color/stellar_explorer" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputlayout_buildingName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/buil_name"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColorHint="@color/purple_500"
+        app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
+        app:layout_constraintTop_toBottomOf="@+id/inputlayout_cust_name"
+        app:startIconDrawable="@drawable/build_icon"
+        app:startIconTint="@color/stellar_explorer"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_buildingname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:editable="false"
+            android:textColor="@color/stellar_explorer" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputlayout_address"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/adrress"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColorHint="@color/purple_500"
+        app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
+        app:layout_constraintTop_toBottomOf="@+id/inputlayout_buildingName"
+        app:startIconDrawable="@drawable/address_icon"
+        app:startIconTint="@color/stellar_explorer"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:editable="false"
+            android:textColor="@color/stellar_explorer" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputlayout_quantity"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/quantity"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColorHint="@color/purple_500"
+        app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
+        app:layout_constraintTop_toBottomOf="@+id/inputlayout_address"
+        app:startIconDrawable="@drawable/quantity_icon"
+        app:startIconTint="@color/stellar_explorer"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:editable="false"
+            android:textColor="@color/stellar_explorer" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputlayout_approvedby"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/Approvedby"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColorHint="@color/purple_500"
+        app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
+        app:layout_constraintTop_toBottomOf="@+id/inputlayout_quantity"
+        app:startIconDrawable="@drawable/approved_icon"
+        app:startIconTint="@color/stellar_explorer"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_approvedby"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:editable="false"
+            android:textColor="@color/stellar_explorer" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputlayout_zone"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/zone"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColorHint="@color/purple_500"
+        app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
+        app:layout_constraintTop_toBottomOf="@+id/inputlayout_approvedby"
+        app:startIconDrawable="@drawable/zone_icon"
+        app:startIconTint="@color/stellar_explorer"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_zone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:editable="false"
+            android:textColor="@color/stellar_explorer" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#c0c0c0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputlayout_zone"
+        tools:ignore="MissingConstraints" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textinput_tankerno"
@@ -35,7 +238,7 @@
         app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
         app:startIconDrawable="@drawable/tanker_icon"
         app:startIconTint="@color/stellar_explorer"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
         app:strokeColor="@color/stellar_explorer"
         tools:ignore="MissingConstraints">
 
@@ -57,7 +260,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="@string/tanker_num"
+        android:hint="@string/driver_mob_num"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:textColorHint="@color/salsify_grass"
@@ -65,7 +268,7 @@
         app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
         app:startIconDrawable="@drawable/phone_icon"
         app:startIconTint="@color/stellar_explorer"
-        app:layout_constraintTop_toBottomOf="@+id/textinput_tankerno"
+        app:layout_constraintTop_toBottomOf="@+id/textinput_driver_name"
         app:strokeColor="@color/stellar_explorer"
         tools:ignore="MissingConstraints">
 
@@ -74,8 +277,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="@color/white"
-
-            android:inputType="textPostalAddress"
+            android:inputType="number"
             android:shadowColor="@color/white"
             android:textColor="@color/stellar_explorer"
             android:textSize="15dp" />
@@ -96,7 +298,7 @@
         app:startIconDrawable="@drawable/driver_icon"
         app:startIconTint="@color/stellar_explorer"
         app:strokeColor="@color/stellar_explorer"
-        app:layout_constraintTop_toBottomOf="@+id/textinput_dri_mob_no"
+        app:layout_constraintTop_toBottomOf="@+id/textinput_tankerno"
         tools:ignore="MissingConstraints">
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -123,12 +325,12 @@
         android:src="@drawable/ic_baseline_image_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textinput_driver_name" />
+        app:layout_constraintTop_toBottomOf="@+id/textinput_dri_mob_no" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/choose_img_tanker_btn"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="32dp"
@@ -138,27 +340,33 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/sweet_white"
         android:textStyle="bold"
+        app:cornerRadius="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_tankerPhoto"
         tools:ignore="MissingConstraints" />
 
-    <Button
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/next"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/next"
-        android:textAppearance="@style/MediumNew"
-        android:textColor="@color/white"
+        android:text="@string/generatepdf"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/sweet_white"
+        android:textStyle="bold"
         app:cornerRadius="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/choose_img_tanker_btn"
+        tools:ignore="MissingConstraints,NotSibling" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

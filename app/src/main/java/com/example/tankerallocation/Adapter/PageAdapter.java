@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 
 import com.example.tankerallocation.UI.DeliverdStatus;
-import com.example.tankerallocation.UI.PendingStatus;
+import com.example.tankerallocation.UI.ApprovedStatus;
 
 public class PageAdapter extends FragmentPagerAdapter {
     public PageAdapter(FragmentManager fm) {
@@ -17,9 +17,9 @@ public class PageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new DeliverdStatus();
+                return new ApprovedStatus();
             case 1:
-                return new PendingStatus();
+                return new DeliverdStatus();
 
             default:
                 return null;

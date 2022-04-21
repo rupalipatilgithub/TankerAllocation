@@ -14,11 +14,24 @@
     <string name="empty_field_error">Please make sure you\'ve entered all fields</string>
     <string name="app_for_txt">Tanker Allocation</string>
     <string name="send_link_txt">Send Link</string>
-    <string name="upload_photo">Upload Photo</string>
+    <string name="upload_photo">Upload Tanker Photo</string>
     <string name="next">Next</string>
     <string name="Deliverd">Deliverd</string>
     <string name="token_no">Token No:</string>
     <string name="tanker_no">Tanker No:</string>
     <string name="driver_no">Driver Mobile No:</string>
     <string name="status">Status:</string>
+    <string name="tankerallocaltion">Allocation Details</string>
+    <string name="generatepdf">Generate Delivery Note</string>
+    <string name="Cust_name">Customer Name</string>
+    <string name="buil_name">Building Name</string>
+    <string name="adrress">Address</string>
+    <string name="quantity">Quantity</string>
+    <string name="Approvedby">Approved By</string>
+    <string name="zone">Zone</string>
+    <string name="deliverydate">Delivery Date</string>
+    <string name="uploaddelivery_note">Upload Delivery Note</string>
+    <string name="deliverynote">Delivery Note</string>
+    <string name="viewdeliverynote">View Delivery Note</string>
+    <string name="Cust_mobileno">Customer Mobile No</string>
 </resources>

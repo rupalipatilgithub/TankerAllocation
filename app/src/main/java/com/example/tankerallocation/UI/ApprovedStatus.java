@@ -12,12 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.tankerallocation.Adapter.PendingAdapter;
-import com.example.tankerallocation.Adapter.SuccessAdapter;
+import com.example.tankerallocation.Adapter.ApprovedAdapter;
 import com.example.tankerallocation.R;
 
 
-public class PendingStatus extends Fragment {
+public class ApprovedStatus extends Fragment {
 
     private RecyclerView pendingitemRecyclerView;
     @Override
@@ -34,7 +33,7 @@ public class PendingStatus extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
-        PendingAdapter pendingAdapter = new PendingAdapter();
+        ApprovedAdapter pendingAdapter = new ApprovedAdapter();
         pendingitemRecyclerView.setLayoutManager(linearLayoutManager);
         pendingitemRecyclerView.setAdapter(pendingAdapter);
     }
