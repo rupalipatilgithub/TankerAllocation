@@ -29,16 +29,16 @@ ImageView deliverynote;
         View view = inflater.inflate(R.layout.fragment_delivery_note, container, false);
         deliverynote=  view.findViewById(R.id.delivery_note);
 
-        Bundle bundle = getArguments();
-        imagePath = bundle.getString("new_img_path");
-        FileInputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileInputStream(new File(imagePath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
-        deliverynote.setImageBitmap(bitmap);
+//        Bundle bundle = getArguments();
+//        imagePath = bundle.getString("new_img_path");
+//        FileInputStream fileInputStream = null;
+//        try {
+//            fileInputStream = new FileInputStream(new File(imagePath));
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+//        deliverynote.setImageBitmap(bitmap);
         return view;
     }
 }

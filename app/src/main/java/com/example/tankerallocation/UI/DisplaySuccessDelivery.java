@@ -113,16 +113,40 @@ public class DisplaySuccessDelivery extends Fragment {
 
         deliverynote.setOnClickListener(v -> {
 
+            if (checkPermission()) {
+                intent = new Intent();
+                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                // checkNCallCamera();
+                // Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 7);
+            } else {
+                requestPermission();
+            }
+
            // Navigation.findNavController(getView()).navigate(R.id.action_delivery_det_show_camera_screen);
-            intent = new Intent();
-            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-            // checkNCallCamera();
-            // Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, 7);
+
 
         });
 
     }
+
+
+    private boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            return false;
+        }
+        return true;
+    }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.CAMERA},
+                PERMISSION_REQUEST_CODE);
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -194,11 +218,12 @@ public class DisplaySuccessDelivery extends Fragment {
                 e.printStackTrace();
             }
 
-            File file=new File(String.valueOf(destination));
-
+           /* File file=new File(String.valueOf(destination));
             Bundle bundle = new Bundle();
-            bundle.putString("new_img_path", file.getAbsolutePath());
-            Navigation.findNavController(getView()).navigate(R.id.action_delivery_det_to_delivery_note);
+            bundle.putString("new_img_path", file.getAbsolutePath());*/
+
+            Toast.makeText(getActivity(),"Delivery Note Uploaded Succesfully",Toast.LENGTH_SHORT).show();
+            Navigation.findNavController(getView()).navigate(R.id.action_delivery_det_to_tanker_allocation);
 
         }
     }

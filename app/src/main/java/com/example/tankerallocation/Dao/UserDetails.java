@@ -13,16 +13,19 @@ public class UserDetails {
     private String userid;
     @Property(nameInDb = "user_name")
     private String username;
+    @Property(nameInDb = "Password")
+    private String password;
     @Property(nameInDb = "zone_id")
     private String zone;
     @Property(nameInDb = "status")
     private String status;
-    @Generated(hash = 1415513635)
-    public UserDetails(Long id, String userid, String username, String zone,
-            String status) {
+    @Generated(hash = 965689104)
+    public UserDetails(Long id, String userid, String username, String password,
+            String zone, String status) {
         this.id = id;
         this.userid = userid;
         this.username = username;
+        this.password = password;
         this.zone = zone;
         this.status = status;
     }
@@ -47,6 +50,12 @@ public class UserDetails {
     public void setUsername(String username) {
         this.username = username;
     }
+    public String getPassword() {
+        return this.password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
     public String getZone() {
         return this.zone;
     }
@@ -59,5 +68,5 @@ public class UserDetails {
     public void setStatus(String status) {
         this.status = status;
     }
-
+   
 }

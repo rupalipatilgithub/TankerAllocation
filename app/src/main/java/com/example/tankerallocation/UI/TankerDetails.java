@@ -38,17 +38,26 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.xmp.impl.Base64;
+import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
@@ -142,49 +151,47 @@ public class TankerDetails extends Fragment {
         });*/
 
 
-
         upload_photo.setOnClickListener(v -> {
 
-                    if (checkPermission()) {
-                        if(true) {
+            if (checkPermission()) {
+                if (true) {
 
-                            intent = new Intent();
-                            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                            // checkNCallCamera();
-                            // Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intent, 7);
-                        }
+                    intent = new Intent();
+                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                    // checkNCallCamera();
+                    // Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 7);
+                }
 
-                    } else {
-                        requestPermission();
-                    }
+            } else {
+                requestPermission();
+            }
 
-                //Navigation.findNavController(getView()).navigate(R.id.action_upload_doc_to_camera);
+            //Navigation.findNavController(getView()).navigate(R.id.action_upload_doc_to_camera);
             /*else {
                 activityResultLauncher.launch(permissions);
             }*/
-           // intent = null;
+            // intent = null;
 
         });
 
         generatepdf.setOnClickListener(v -> {
-          //  createPdf();
+            //  createPdf();
 
             String tan_no = tanker_num.getText().toString();
             String mobile_no = mob_num.getText().toString();
             String drivername = dirver_name.getText().toString();
-            if (!tan_no.isEmpty() && !mobile_no.isEmpty() && !drivername.isEmpty()){
+            if (!tan_no.isEmpty() && !mobile_no.isEmpty() && !drivername.isEmpty()) {
                 try {
                     createpdf();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 Snackbar.make(getView(), getString(R.string.empty_field_error), Snackbar.LENGTH_LONG).show();
             }
 
-            });
+        });
         return view;
     }
 
@@ -192,12 +199,12 @@ public class TankerDetails extends Fragment {
     private void createpdf() throws IOException {
 
         String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        File file = new File(pdfpath,"mypdf.pdf");
+        File file = new File(pdfpath, "mypdf.pdf");
         OutputStream outputStream = new FileOutputStream(file);
         PdfWriter pdfWriter = new PdfWriter(file);
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         Document document = new Document(pdfDocument);
-        document.setMargins(0f,0f,0f,0f);
+        document.setMargins(0f, 0f, 0f, 0f);
 
 
         //pdfDocument.setDefaultPageSize(PageSize.A6);
@@ -213,7 +220,7 @@ public class TankerDetails extends Fragment {
         Image image = new Image(imageData);
 */
         Paragraph paragraph = new Paragraph("Note").setBold().setFontSize(20).setTextAlignment(TextAlignment.CENTER);
-        float[] width ={200f,200f};
+        float[] width = {200f, 200f};
         Table table = new Table(width);
         table.setHorizontalAlignment(HorizontalAlignment.CENTER);
         table.setMarginTop(20);
@@ -245,29 +252,6 @@ public class TankerDetails extends Fragment {
         table.addCell(new Cell().add(new Paragraph("Zone")));
         table.addCell(new Cell().add(new Paragraph("")));
 
-        /*Date c = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + c);
-
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-        String formattedDate = df.format(c);
-
-       // DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/mm/yyyy");
-        table.addCell(new Cell().add(new Paragraph("Delivery Date")));
-        table.addCell(new Cell().add(new Paragraph(formattedDate)));
-        DateTimeFormatter dateTimeFormatte = DateTimeFormatter.ofPattern("hh:mm:ss");
-        table.addCell(new Cell().add(new Paragraph("Delivery Time")));
-        table.addCell(new Cell().add(new Paragraph(LocalTime.now().format(dateTimeFormatte).toString())));
-
-        Paragraph signature = new Paragraph(" Customer Signature").setBold().setFontSize(12).setTextAlignment(TextAlignment.RIGHT);
-        signature.setMarginRight(20);*/
-
-
-
-
-
-
-
-
         //second table
 
         Table table1 = new Table(width);
@@ -286,20 +270,51 @@ public class TankerDetails extends Fragment {
         table1.addCell(new Cell().add(new Paragraph("Driver Mobile No")));
         table1.addCell(new Cell().add(new Paragraph("")));
 
-        Paragraph custsig = new Paragraph("Customer Signature:").setTextAlignment(TextAlignment.CENTER);
-        custsig.setMargin(10);
-        Paragraph custname = new Paragraph("Customer Name :").setTextAlignment(TextAlignment.CENTER);
-        Paragraph datetime = new Paragraph("Delivery Date and Time :").setTextAlignment(TextAlignment.CENTER);
-        Paragraph otp = new Paragraph("OTP :").setTextAlignment(TextAlignment.CENTER);
-
-
-
         Drawable d = getResources().getDrawable(R.drawable.cidkologo);
 
-        Bitmap b = ((BitmapDrawable)d).getBitmap();
+        //third table
+        Table table2 = new Table(width);
+        table2.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        table2.setMarginTop(20);
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+        table2.addCell(new Cell().add(new Paragraph("Delivery date")));
+        table2.addCell(new Cell().add(new Paragraph(formattedDate)));
+
+
+        String currentTime = new SimpleDateFormat("HH:mm:ss a", Locale.getDefault()).format(new Date());
+
+       // Date currentTime = Calendar.getInstance().getTime();
+        table2.addCell(new Cell().add(new Paragraph("Delivery Time")));
+        table2.addCell(new Cell().add(new Paragraph(String.valueOf(currentTime))));
+
+        PdfPage page = pdfDocument.addNewPage();
+        PdfCanvas pdfCanvas = new PdfCanvas(page);
+        Rectangle rectangle = new Rectangle(100, 50, 400, 130);
+        pdfCanvas.rectangle(rectangle);
+        pdfCanvas.stroke();
+        Canvas canvas = new Canvas(pdfCanvas, pdfDocument, rectangle);
+        PdfFont font = PdfFontFactory.createFont(FontConstants.TIMES_ROMAN);
+        PdfFont bold = PdfFontFactory.createFont(FontConstants.TIMES_BOLD);
+
+        Paragraph custsig = new Paragraph("Customer Signature:").setMarginLeft(5);
+        // custsig.setMargin(10);
+        Paragraph custname = new Paragraph("Customer Name :").setMarginLeft(5);
+        Paragraph datetime = new Paragraph("Delivery Date and Time :").setMarginLeft(5);
+        Paragraph otp = new Paragraph("OTP :").setMarginLeft(5);
+        canvas.add(custsig);
+        canvas.add(custname);
+        canvas.add(datetime);
+        canvas.add(otp);
+        canvas.close();
+
+
+        Bitmap b = ((BitmapDrawable) d).getBitmap();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        b.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
-        byte [] bimapdate = byteArrayOutputStream.toByteArray();
+        b.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] bimapdate = byteArrayOutputStream.toByteArray();
         ImageData imageData = ImageDataFactory.create(bimapdate);
         Image image = new Image(imageData);
         image.scaleAbsolute(100, 80);
@@ -309,23 +324,18 @@ public class TankerDetails extends Fragment {
         document.add(paragraph);
         document.add(table);
         document.add(table1);
-        document.add(custsig);
-        document.add(custname);
-        document.add(datetime);
-        document.add(otp);
+        document.add(table2);
+        //document.add((IBlockElement) rectangle);
+
+
         document.close();
 
         //second table
 
 
-
-
-
-
-        Toast.makeText(getActivity(),"Pdf Created succesfully",Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Pdf Created succesfully", Toast.LENGTH_LONG).show();
 
         Navigation.findNavController(getView()).navigate(R.id.action_tanker_det_to_pdfview);
-
 
 
     }
@@ -335,6 +345,7 @@ public class TankerDetails extends Fragment {
         super.onStart();
         setup();
     }
+
     private void setup() {
         // Enable Android-style asset loading (highly recommended)
         PDFBoxResourceLoader.init(getActivity());
@@ -380,20 +391,6 @@ public class TankerDetails extends Fragment {
             contentStream.setLeading(16.0f);
             contentStream.newLineAtOffset(100, 700);
             contentStream.showText("");
-          /*  contentStream.newLine();
-            contentStream.showText(text1);
-            contentStream.newLine();
-            contentStream.showText(text2);
-            contentStream.newLine();
-            contentStream.showText(text3);
-            contentStream.newLine();
-            contentStream.showText(text4);
-            contentStream.newLine();
-            contentStream.showText(text5);
-            contentStream.newLine();
-            contentStream.showText(text6);
-            contentStream.newLine();
-            contentStream.showText(text7);*/
             contentStream.endText();
             contentStream.close();
 
@@ -401,7 +398,7 @@ public class TankerDetails extends Fragment {
             String path = root.getAbsolutePath() + "/Download/mypdf.pdf";
             document.save(path);
             document.close();
-            Toast.makeText(getActivity(),"PDF generated Succesfully",Toast.LENGTH_LONG ).show();
+            Toast.makeText(getActivity(), "PDF generated Succesfully", Toast.LENGTH_LONG).show();
             //tv.setText("Successfully wrote PDF to " + path);
 
         } catch (IOException e) {
@@ -413,7 +410,6 @@ public class TankerDetails extends Fragment {
     /**
      * Loads an existing PDF and renders it to a Bitmap
      */
-
 
 
     private boolean checkPermission() {
@@ -454,7 +450,6 @@ public class TankerDetails extends Fragment {
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -491,6 +486,7 @@ public class TankerDetails extends Fragment {
                 break;
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

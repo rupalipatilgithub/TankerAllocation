@@ -22,13 +22,22 @@
 
     <fragment
         android:id="@+id/login"
-        android:name="com.example.tankerallocation.UI.Login"
+        android:name="com.example.tankerallocation.UI.Authentication.Login"
         android:label="Login"
         tools:layout="@layout/fragment_login">
 
         <action
             android:id="@+id/action_login_to_TankerAllocation"
             app:destination="@id/tanker_allocation"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+
+        <action
+            android:id="@+id/action_login_to_forgot_pass"
+            app:destination="@id/fotgot_pass"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -83,6 +92,14 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_delivery_det_to_tanker_allocation"
+            app:destination="@id/tanker_allocation"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -94,19 +111,40 @@
     </fragment>
 
     <fragment
-        android:id="@+id/camera"
-        android:name="com.example.tankerallocation.UI.CameraScreen"
-        android:label="Camera SCreen"
-        tools:layout="@layout/camera_screen">
+        android:id="@+id/fotgot_pass"
+        android:name="com.example.tankerallocation.UI.Authentication.ForgotPassword"
+        android:label="Forgot Password"
+        tools:layout="@layout/fragment_forgot_password">
 
-        <action
-            android:id="@+id/action_camerascreen_delivery_note"
-            app:destination="@id/delivery_note"
+        <action android:id="@+id/action_forgot_pass_to_reset_pass"
+            app:destination="@id/reset_pass"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"></action>
+
+        <action android:id="@+id/action_to_forgot_pass_to_login"
+            app:destination="@id/login"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"></action>
     </fragment>
+
+    <fragment
+        android:id="@+id/reset_pass"
+        android:name="com.example.tankerallocation.UI.Authentication.ResetPassword"
+        android:label="Reset Password"
+        tools:layout="@layout/fragment_reset_password">
+        <action android:id="@+id/action_to_reset_pass_to_login"
+            app:destination="@id/login"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"></action>
+
+    </fragment>
+
 
 
 </navigation>

@@ -13,7 +13,7 @@
     <string name="ok_txt">Okay</string>
     <string name="empty_field_error">Please make sure you\'ve entered all fields</string>
     <string name="app_for_txt">Tanker Allocation</string>
-    <string name="send_link_txt">Send Link</string>
+    <string name="send_link_txt">update</string>
     <string name="upload_photo">Upload Tanker Photo</string>
     <string name="next">Next</string>
     <string name="Deliverd">Deliverd</string>
@@ -34,4 +34,8 @@
     <string name="deliverynote">Delivery Note</string>
     <string name="viewdeliverynote">View Delivery Note</string>
     <string name="Cust_mobileno">Customer Mobile No</string>
+    <string name="new_pass">New Password</string>
+    <string name="confirm_pass">Confirm Password</string>
+    <string name="passwordchange">Password Mismatch</string>
+    <string name="viewdetails">View Details</string>
 </resources>

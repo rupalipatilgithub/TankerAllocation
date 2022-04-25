@@ -1,10 +1,6 @@
-package com.example.tankerallocation.UI;
+package com.example.tankerallocation.UI.Authentication;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.tankerallocation.Dao.DaoMaster;
 import com.example.tankerallocation.Dao.DaoSession;
@@ -49,7 +48,8 @@ public class Login extends Fragment {
         TextInputEditText password = view.findViewById(R.id.pass);
         forgotpass = view.findViewById(R.id.tv_forgot_pss);
         forgotpass.setOnClickListener(v -> {
-            // Navigation.findNavController(view).navigate(R.id.action_login_to_forgotpass);
+
+             Navigation.findNavController(view).navigate(R.id.action_login_to_forgot_pass);
         });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
