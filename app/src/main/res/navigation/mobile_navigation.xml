@@ -78,6 +78,15 @@
         android:name="com.example.tankerallocation.UI.PdfViewer"
         android:label="Tanker Allocation"
         tools:layout="@layout/fragment_pdf_viewer">
+
+        <action
+            android:id="@+id/action_pdfview_to_allocation"
+            app:destination="@id/tanker_allocation"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment

@@ -9,7 +9,7 @@ import com.example.tankerallocation.UI.DeliverdStatus;
 import com.example.tankerallocation.UI.ApprovedStatus;
 
 public class PageAdapter extends FragmentPagerAdapter {
-    public PageAdapter(FragmentManager fm) {
+    public PageAdapter(FragmentManager fm, int tabCount) {
         super(fm);
     }
 

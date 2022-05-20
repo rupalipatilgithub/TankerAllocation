@@ -13,7 +13,8 @@ public class RetrofitClient {
     private Context context;
     private static RetrofitClient mInstance;
     private Retrofit retrofit;
-    private static final String BASE_URL = "https://codelivery.elinktechnologies.net/api/";
+
+    private static final String BASE_URL = "https://tws.elintwater.com/api/";
     //private static String BASE_URL = "https://d9e3699b-4cc0-4180-8125-c5d082db2d42.mock.pstmn.io/";
 
     private RetrofitClient(Context context) {

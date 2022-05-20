@@ -1,5 +1,7 @@
 package com.example.tankerallocation.Adapter;
 
+import android.app.Activity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +12,27 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.example.tankerallocation.Model.Approved;
 import com.example.tankerallocation.R;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ApprovedAdapter extends RecyclerView.Adapter<ApprovedAdapter.PendinglistViewHolder> {
 
-    int totalItems = 5;
+
+
+  List<Approved> results;
+
+
+    public ApprovedAdapter(Activity activity, List<Approved> list) {
+       /* super(activity, R.layout.row_tweet, tweets);
+        inflater = activity.getWindow().getLayoutInflater();*/
+        this.results = list;
+    }
+
     public ApprovedAdapter.PendinglistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View lmcItem = inflater.inflate(R.layout.card_layout, parent, false);
@@ -33,15 +48,30 @@ public class ApprovedAdapter extends RecyclerView.Adapter<ApprovedAdapter.Pendin
         attachClickListeners(relativeLayout, position);
 
 
+            holder.token_no.setText(results.get(position).getToken_no());
+            holder.val_custname.setText(results.get(position).getCust_name());
+            holder.val_custmob_no.setText(results.get(position).getCust_mob_no());
+            holder.val_secotr.setText(results.get(position).getSector_no());
+            holder.val_plotno.setText(results.get(position).getAddress());
+            // holder.val_bul_name.setText(results.get(position).getSociety_name());
+            holder.val_quanity.setText(results.get(position).getQuantity());
+            holder.val_zone.setText(results.get(position).getNode_id());
+            holder.val_approvedby.setText(results.get(position).getApproved_by());
+            holder.val_consumer_no.setText(results.get(position).getConsumer_no());
+
+
+
     }
 
     private void attachClickListeners(RelativeLayout relativeLayout, int position) {
 
         relativeLayout.setOnClickListener(event -> {
-
-            Navigation.findNavController(relativeLayout).navigate(R.id.tanker_det);
+            Bundle bundle=new Bundle();
+            bundle.putSerializable("approved", results.get(position));
+            Navigation.findNavController(relativeLayout).navigate(R.id.tanker_det,bundle);
 
         });
+
 
 
 
@@ -53,7 +83,7 @@ public class ApprovedAdapter extends RecyclerView.Adapter<ApprovedAdapter.Pendin
 
     @Override
     public int getItemCount() {
-        return totalItems;
+        return results.size();
     }
 
     public class PendinglistViewHolder extends RecyclerView.ViewHolder {
@@ -65,12 +95,18 @@ public class ApprovedAdapter extends RecyclerView.Adapter<ApprovedAdapter.Pendin
         private TextView val_custname;
         private TextView build_name;
         private TextView val_bul_name;
-        private TextView address_tv;
-        private TextView val_address;
+        private TextView tv_sector;
+        private TextView val_secotr;
         private TextView tv_quantity;
         private TextView val_quanity;
         private TextView tv_zone;
         private TextView val_zone;
+        private TextView tv_plotno;
+        private TextView val_plotno;
+        private TextView val_approvedby;
+        private TextView val_custmob_no;
+        private TextView val_consumer_no;
+        private TextView tv_consumer_no;
 
 
         public PendinglistViewHolder(@NonNull View itemView) {
@@ -79,14 +115,20 @@ public class ApprovedAdapter extends RecyclerView.Adapter<ApprovedAdapter.Pendin
             token_no = itemView.findViewById(R.id.val_token_no);
             cust_name = itemView.findViewById(R.id.tv_cust_name);
             val_custname = itemView.findViewById(R.id.val_cus_name);
-            build_name = itemView.findViewById(R.id.tv_building_no);
-            val_bul_name = itemView.findViewById(R.id.val_buil_no);
-            address_tv = itemView.findViewById(R.id.tv_address);
-            val_address = itemView.findViewById(R.id.val_address);
+            build_name = itemView.findViewById(R.id.tv_building_name);
+            val_bul_name = itemView.findViewById(R.id.val_building_name);
+            tv_sector = itemView.findViewById(R.id.tv_sector);
+            val_secotr = itemView.findViewById(R.id.val_sector);
             tv_quantity = itemView.findViewById(R.id.tv_quantity);
             val_quanity = itemView.findViewById(R.id.val_quantity);
             tv_zone = itemView.findViewById(R.id.tv_zone);
             val_zone = itemView.findViewById(R.id.val_zone);
+            tv_plotno = itemView.findViewById(R.id.tv_plotno);
+            val_plotno = itemView.findViewById(R.id.val_plotno);
+            val_approvedby = itemView.findViewById(R.id.val_approvedby);
+            val_custmob_no = itemView.findViewById(R.id.val_cus_mob_no);
+            tv_consumer_no = itemView.findViewById(R.id.tv_consumer_no);
+            val_consumer_no = itemView.findViewById(R.id.val_consumer_no);
         }
 
     }

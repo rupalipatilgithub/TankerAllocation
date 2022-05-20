@@ -58,7 +58,7 @@ public class ForgotPassword extends Fragment {
                 String newpas = newpass.getText().toString();
                 String con_pass = confirmpass.getText().toString();
                 String email = etEmail.getText().toString();
-                if(!newpas.isEmpty() && !con_pass.isEmpty() &&email.isEmpty()){
+                //if(!newpas.isEmpty() && !con_pass.isEmpty() &&email.isEmpty()){
 
                     if (!TextUtils.isEmpty(newpas) && !TextUtils.isEmpty(con_pass) && !TextUtils.isEmpty(email)) {
                         if (newpas.equals(con_pass)) {
@@ -66,15 +66,16 @@ public class ForgotPassword extends Fragment {
                             System.out.println("Valid");
                             forgotapi(email,newpas,con_pass);
                         } else if (!newpas.equals(con_pass)) {
-                            confirmPassTil.setErrorEnabled(true);
+                           // confirmPassTil.setErrorEnabled(true);
+                            validation();
                         }
 
                         //forgotapi(email,newpas,con_pass);
 
-                    }
-                    else {
+
+                   /* else {
                         validation();
-                    }
+                    }*/
                 }
                 else {
                     Snackbar.make(getView(), getString(R.string.empty_field_error), Snackbar.LENGTH_LONG).show();
@@ -84,6 +85,9 @@ public class ForgotPassword extends Fragment {
 
         });
         return view;
+    }
+
+    private void mismatchvalidation() {
     }
 
     private void forgotapi(String email, String newpas, String con_pass) {

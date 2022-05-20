@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
@@ -27,9 +26,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.example.tankerallocation.Model.Approved;
 import com.example.tankerallocation.R;
+import com.example.tankerallocation.RetrofitService.RetrofitClient;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -37,8 +43,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -66,8 +77,16 @@ public class DisplaySuccessDelivery extends Fragment {
     private TextView tv_driver_mob;
     private TextView val_driver_mob;
     private TextView tv_dliverydate;
-    private TextView val_deliverydate;
+    private TextView val_deliverydat;
+    private TextView tv_sector;
+    private TextView val_sector;
+    private TextView tv_plot;
+    private TextView val_plot;
+    private TextView approvedby_tv;
+    private TextView val_approvedby;
+    private TextView val_tanker_filling_loc;
     private Button deliverynote;
+    Approved approved;
 
     private Intent intent;
     private File destination = null;
@@ -75,13 +94,14 @@ public class DisplaySuccessDelivery extends Fragment {
     AssetManager assetManager;
     Bitmap pageImage;
     private static final int PERMISSION_REQUEST_CODE = 200;
+    View view;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_display_success_delivery, container, false);
+        view = inflater.inflate(R.layout.fragment_display_success_delivery, container, false);
         return view;
     }
 
@@ -96,11 +116,19 @@ public class DisplaySuccessDelivery extends Fragment {
         va_cust_mob = view.findViewById(R.id.val_cus_mob_no);
         tv_builname = view.findViewById(R.id.tv_building_name);
         val_build_name = view.findViewById(R.id.val_building_name);
-        tv_add = view.findViewById(R.id.tv_address);
-        val_add = view.findViewById(R.id.val_address);
+        val_tanker_filling_loc = view.findViewById(R.id.val_tanker_filling_loc);
+        // tv_add = view.findViewById(R.id.tv_address);
+        //  val_add = view.findViewById(R.id.val_address);
+        tv_sector = view.findViewById(R.id.tv_sector);
+        val_sector = view.findViewById(R.id.val_sector);
+        tv_plot = view.findViewById(R.id.tv_plotno);
+        val_plot = view.findViewById(R.id.val_plotno);
         tv_quantity = view.findViewById(R.id.tv_quantity);
         val_quantity = view.findViewById(R.id.val_quantity);
+        approvedby_tv = view.findViewById(R.id.tv_approvedby);
+        val_approvedby = view.findViewById(R.id.val_approvedby);
         tv_zone = view.findViewById(R.id.tv_zone);
+        val_zone = view.findViewById(R.id.val_zone);
         tv_tanker_num = view.findViewById(R.id.tv_tankernum);
         val_tankerno = view.findViewById(R.id.val_tankerno);
         tv_driver_name = view.findViewById(R.id.tv_driver_name);
@@ -108,8 +136,41 @@ public class DisplaySuccessDelivery extends Fragment {
         tv_driver_mob = view.findViewById(R.id.tv_driverMob);
         val_driver_mob = view.findViewById(R.id.val_driverno);
         tv_dliverydate = view.findViewById(R.id.tv_deliverydate);
-        val_deliverydate = view.findViewById(R.id.val_deiverydate);
+        val_deliverydat = view.findViewById(R.id.val_deliverydate);
         deliverynote = view.findViewById(R.id.btnviewdeliverynote);
+
+
+        approved = new Approved();
+        if (getArguments() != null) {
+            Bundle bundle = getArguments();
+            approved = (Approved) bundle.getSerializable("approved");
+            Log.e("tokenid", approved.getToken_no() + "kkk");
+
+        }
+
+
+        val_tok_no.setText(approved.getToken_no());
+        val_custname.setText(approved.getCust_name());
+        va_cust_mob.setText(approved.getCust_mob_no());
+        val_zone.setText(approved.getNode_id());
+        val_plot.setText(approved.getAddress());
+        val_build_name.setText(approved.getSociety_name());
+
+        val_quantity.setText(approved.getQuantity());
+        val_approvedby.setText(approved.getApproved_by());
+
+        val_tankerno.setText(approved.getTanker_no());
+        val_dri_name.setText(approved.getDrivername());
+        val_driver_mob.setText(approved.getDrivermob_no());
+        val_tanker_filling_loc.setText(approved.getDrivermob_no());
+
+
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time => "+c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+        val_deliverydat.setText(formattedDate);
 
         deliverynote.setOnClickListener(v -> {
 
@@ -123,7 +184,7 @@ public class DisplaySuccessDelivery extends Fragment {
                 requestPermission();
             }
 
-           // Navigation.findNavController(getView()).navigate(R.id.action_delivery_det_show_camera_screen);
+            // Navigation.findNavController(getView()).navigate(R.id.action_delivery_det_show_camera_screen);
 
 
         });
@@ -174,7 +235,7 @@ public class DisplaySuccessDelivery extends Fragment {
 
                                         public void onClick(DialogInterface dialog, int which) {
                                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                               // requestPermission();
+                                                // requestPermission();
                                             }
                                         }
                                     });
@@ -184,12 +245,13 @@ public class DisplaySuccessDelivery extends Fragment {
                 break;
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 7 && resultCode == RESULT_OK) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-          //  tanker_photo.setImageBitmap(bitmap);
+            //  tanker_photo.setImageBitmap(bitmap);
 
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -222,10 +284,79 @@ public class DisplaySuccessDelivery extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("new_img_path", file.getAbsolutePath());*/
 
-            Toast.makeText(getActivity(),"Delivery Note Uploaded Succesfully",Toast.LENGTH_SHORT).show();
+            uploaddeliverynote();
+
+            Toast.makeText(getActivity(), "Delivery Note Uploaded Succesfully", Toast.LENGTH_SHORT).show();
             Navigation.findNavController(getView()).navigate(R.id.action_delivery_det_to_tanker_allocation);
 
         }
+    }
+
+    private void uploaddeliverynote() {
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+        JsonObject postParam = new JsonObject();
+        try {
+            postParam.addProperty("token_no", approved.getToken_no());
+            postParam.addProperty("consumer_no", approved.getConsumer_no());
+            postParam.addProperty("delivery_note_photo", "");
+            postParam.addProperty("demandgeneration_date", formattedDate);
+            postParam.addProperty("status", "work completed");
+        } finally {
+
+        }
+        Call<JsonObject> call = RetrofitClient.getInstance(getActivity())
+                .getApi()
+                .SuccessData(postParam);
+
+        call.enqueue(
+                new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        Log.d("response", "Getting response from server: " + response);
+
+                        JSONObject movieObject = null;
+                        try {
+                            movieObject = new JSONObject(String.valueOf(response.body()));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            String token_no = movieObject.getString("token_no");
+                            String status = movieObject.getString("Work Completed");
+
+
+                            if (status.equals("work completed")) {
+
+                                Toast.makeText(getActivity(), "Delivery note uploaded succesfully for" + token_no, Toast.LENGTH_SHORT).show();
+                            } else {
+
+                                Snackbar msg = Snackbar.make(view, "upload error", Snackbar.LENGTH_INDEFINITE);
+                                msg.setAction(R.string.ok_txt, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        msg.dismiss();
+                                    }
+                                }).show();
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Log.d("response", "Getting response from server: " + t);
+
+                    }
+                }
+        );
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {

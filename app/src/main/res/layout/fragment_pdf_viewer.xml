@@ -8,8 +8,49 @@
     tools:context=".UI.PdfViewer">
 
     <!-- TODO: Update blank fragment layout -->
-  <com.github.barteksc.pdfviewer.PDFView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:id="@+id/pdfview"/>
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdfview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/home"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:text="@string/home"
+        android:textAppearance="@style/MediumNew"
+        android:textColor="@color/white"
+        app:cornerRadius="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/printpdf"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/printpdf"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/print"
+        android:textAppearance="@style/MediumNew"
+        android:textColor="@color/white"
+        app:cornerRadius="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/home"
+      />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

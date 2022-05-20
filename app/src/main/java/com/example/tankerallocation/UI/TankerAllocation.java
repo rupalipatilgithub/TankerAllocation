@@ -1,5 +1,7 @@
 package com.example.tankerallocation.UI;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,19 +12,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.tankerallocation.Adapter.PageAdapter;
-import com.example.tankerallocation.Dao.DaoMaster;
-import com.example.tankerallocation.Dao.DaoSession;
-import com.example.tankerallocation.Dao.UserDetails;
+
 import com.example.tankerallocation.R;
 import com.example.tankerallocation.RetrofitService.APIService;
+import com.example.tankerallocation.RetrofitService.RetrofitClient;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.JsonObject;
 
 import org.greenrobot.greendao.database.Database;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +48,7 @@ public class TankerAllocation extends Fragment {
     TabLayout tabLayout;
     PageAdapter pagepadapter;
     APIService apiService;
+    RequestQueue requestQueue;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,71 +59,15 @@ public class TankerAllocation extends Fragment {
         tabLayout = view.findViewById(R.id.tabLayout);
         setPagerAdapter();
         setTabLayout();
-      //  GetData();
+
         return view;
     }
 
-    private void GetData() {
 
-        String android_id = Settings.Secure.getString(getContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-        JsonObject postParam = new JsonObject();
-        try {
-            postParam.addProperty("email_id", "");
-            postParam.addProperty("pass", "pass");
-            postParam.addProperty("device_id", android_id);
-        } finally {
+    private void setPagerAdapter() {
 
-        }
-
-        Call<JsonObject> call = apiService.ImportData(postParam);
-        call.enqueue(
-                new Callback<JsonObject>() {
-                    @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        Log.d("response", "Getting response from server: " + response);
-
-                        JSONObject movieObject = null;
-                        try {
-                            movieObject = new JSONObject(String.valueOf(response));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            String userId = movieObject.getString("user_id");
-                            String zone = movieObject.getString("zone_id");
-                            String status = movieObject.getString("status");
-
-                            DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(getContext(), "users.db");
-                            Database database = devOpenHelper.getWritableDb();
-                            DaoSession daoSession = new DaoMaster(database).newSession();
-
-                            UserDetails userDetails = new UserDetails();
-                            userDetails.setUserid(userId);
-                            userDetails.setZone(zone);
-                            userDetails.setStatus(status);
-                            daoSession.insert(userDetails);
-
-                            // return true;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
-                        Log.d("response", "Getting response from server: " + t);
-
-                    }
-                }
-        );
-
-    }
-
-    private void setPagerAdapter(){
-        pagepadapter = new PageAdapter(getActivity().getSupportFragmentManager());
+        pagepadapter = new PageAdapter(getChildFragmentManager(), tabLayout.getTabCount());
+        // pagepadapter = new PageAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(pagepadapter);
     }
 

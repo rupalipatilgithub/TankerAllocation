@@ -2,16 +2,13 @@ package com.example.tankerallocation.UI;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -24,72 +21,69 @@ import androidx.navigation.Navigation;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import com.example.tankerallocation.Dao.DaoMaster;
+import com.example.tankerallocation.Dao.DaoSession;
+import com.example.tankerallocation.Dao.UserDetails;
+import com.example.tankerallocation.Dao.UserDetailsDao;
+import com.example.tankerallocation.Model.Approved;
+import com.example.tankerallocation.Model.TankerNoModel;
 import com.example.tankerallocation.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
-import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
-import com.itextpdf.kernel.xmp.impl.Base64;
-import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
-import com.tom_roush.pdfbox.pdmodel.PDDocument;
-import com.tom_roush.pdfbox.pdmodel.PDPage;
-import com.tom_roush.pdfbox.pdmodel.PDPageContentStream;
-import com.tom_roush.pdfbox.pdmodel.font.PDFont;
-import com.tom_roush.pdfbox.pdmodel.font.PDType1Font;
-import com.tom_roush.pdfbox.pdmodel.graphics.image.JPEGFactory;
-import com.tom_roush.pdfbox.pdmodel.graphics.image.LosslessFactory;
-import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
+
+import org.greenrobot.greendao.database.Database;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilterOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -105,11 +99,27 @@ public class TankerDetails extends Fragment {
 
     private TextInputEditText token_no_edt;
     private TextInputEditText cust_name_edt;
+    private TextInputEditText cust_mob_no;
     private TextInputEditText builname_edt;
     private TextInputEditText address_edt;
     private TextInputEditText quantity_edt;
     private TextInputEditText approvedby_edt;
+    private TextInputEditText plot_edit;
+    private TextInputEditText sector_edit;
+    private TextInputEditText society_edit;
     private TextInputEditText zone_edit;
+    private TextInputEditText cunsumer_no;
+    MaterialAutoCompleteTextView tanker_num;
+    MaterialAutoCompleteTextView dri_mob_num;
+    MaterialAutoCompleteTextView dirver_name;
+    MaterialAutoCompleteTextView fillinglocation;
+    Approved approved;
+    List<String> tankerlist = new ArrayList<String>();
+    List<String> filling_location_list = new ArrayList<String>();
+    Button generatepdf;
+
+    RequestQueue requestQueue;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -119,36 +129,56 @@ public class TankerDetails extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tanker_details, container, false);
         token_no_edt = view.findViewById(R.id.edt_token_no);
         cust_name_edt = view.findViewById(R.id.edt_custname);
-        builname_edt = view.findViewById(R.id.edt_buildingname);
-        address_edt = view.findViewById(R.id.edt_address);
+        cust_mob_no = view.findViewById(R.id.edt_cust_mob_no);
+        society_edit = view.findViewById(R.id.edt_buildingname);
+        sector_edit = view.findViewById(R.id.edt_sector);
         quantity_edt = view.findViewById(R.id.edt_quantity);
         approvedby_edt = view.findViewById(R.id.edt_approvedby);
+        plot_edit = view.findViewById(R.id.edt_plotno);
         zone_edit = view.findViewById(R.id.edt_zone);
-        MaterialAutoCompleteTextView tanker_num = view.findViewById(R.id.autoComplete_totanker_num);
-        MaterialAutoCompleteTextView mob_num = view.findViewById(R.id.autoComplete_to_dri_mob);
-        MaterialAutoCompleteTextView dirver_name = view.findViewById(R.id.autoComplete_to_driver_name);
+        tanker_num = view.findViewById(R.id.autoComplete_totanker_num);
+        dri_mob_num = view.findViewById(R.id.autoComplete_to_dri_mob);
+        dirver_name = view.findViewById(R.id.autoComplete_to_driver_name);
         MaterialButton upload_photo = view.findViewById(R.id.choose_img_tanker_btn);
         tanker_photo = view.findViewById(R.id.img_tankerPhoto);
-        Button generatepdf = view.findViewById(R.id.next);
-        //MaterialAutoCompleteTextView cityNameTv = view.findViewById(R.id.autoComplete_tocity);
-        /*Call<CityResponse> cityResponse = RetrofitClient.getInstance(getActivity()).getApi().getCities();
-        cityResponse.enqueue(new Callback<CityResponse>() {
+        fillinglocation = view.findViewById(R.id.autoComplete_to_fillingStation);
+        cunsumer_no = view.findViewById(R.id.edt_cunsumer_no);
+        generatepdf = view.findViewById(R.id.next);
+       // generatepdf.setVisibility(View.GONE);
+
+        getTankerList();
+
+        GetFillingSttaion();
+
+        approved = new Approved();
+        if (getArguments() != null) {
+            Bundle bundle = getArguments();
+            approved = (Approved) bundle.getSerializable("approved");
+            Log.e("tokenid", approved.getToken_no() + "kkk");
+
+        }
+
+
+        token_no_edt.setText(approved.getToken_no());
+        cust_name_edt.setText(approved.getCust_name());
+        cust_mob_no.setText(approved.getCust_mob_no());
+        zone_edit.setText(approved.getNode_id());
+        plot_edit.setText(approved.getAddress());
+        sector_edit.setText(approved.getSector_no());
+        society_edit.setText(approved.getSociety_name());
+        quantity_edt.setText(approved.getQuantity());
+        approvedby_edt.setText(approved.getApproved_by());
+        cunsumer_no.setText(approved.getConsumer_no());
+        // tanker_num.setOnItemSelectedListener(this);
+
+        tanker_num.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onResponse(Call<CityResponse> call, Response<CityResponse> response) {
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.city_list_item_style, R.id.tV1);
-                List<SpinnerCity> cities = response.body().getCities();
-                cities.forEach(e -> {
-                    arrayAdapter.add(e.getCityName());
-                });
-
-                cityNameTv.setAdapter(arrayAdapter);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                // here is your selected item
+                loaddriverDetails(selectedItem);
             }
-
-
-            @Override
-            public void onFailure(Call<CityResponse> call, Throwable t) {
-            }
-        });*/
+        });
 
 
         upload_photo.setOnClickListener(v -> {
@@ -167,19 +197,13 @@ public class TankerDetails extends Fragment {
                 requestPermission();
             }
 
-            //Navigation.findNavController(getView()).navigate(R.id.action_upload_doc_to_camera);
-            /*else {
-                activityResultLauncher.launch(permissions);
-            }*/
-            // intent = null;
-
         });
 
         generatepdf.setOnClickListener(v -> {
             //  createPdf();
 
             String tan_no = tanker_num.getText().toString();
-            String mobile_no = mob_num.getText().toString();
+            String mobile_no = dri_mob_num.getText().toString();
             String drivername = dirver_name.getText().toString();
             if (!tan_no.isEmpty() && !mobile_no.isEmpty() && !drivername.isEmpty()) {
                 try {
@@ -195,120 +219,255 @@ public class TankerDetails extends Fragment {
         return view;
     }
 
+    private void GetFillingSttaion() {
+        final String url = "https://tws.elintwater.com/api/API/FillingstationList";
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+            public void onResponse(JSONArray response) {
+                JSONArray jsonArray = response;
+                try {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String station_id = jsonObject.getString("fillingstation_id");
+                        String fillingstation = jsonObject.getString("filling_location");
+
+                        filling_location_list.add(fillingstation);
+
+
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, filling_location_list);
+
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+                            (getActivity(), android.R.layout.simple_spinner_item, filling_location_list);
+
+                    dataAdapter.setDropDownViewResource
+                            (android.R.layout.simple_spinner_dropdown_item);
+
+                    fillinglocation.setAdapter(dataAdapter);
+                    //  tanker_num.setOnItemSelectedListener(tanker_num.getItemSelectedListener());
+
+                    // tanker_num.setOnItemSelectedListener(TankerDetails.this);
+
+                } catch (Exception w) {
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //  Toast.makeText(MainActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(jsonArrayRequest);
+    }
+
+
+    private void getTankerList() {
+        final String url = "https://tws.elintwater.com/api/API/TankerList";
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+
+            public void onResponse(JSONArray response) {
+                JSONArray jsonArray = response;
+                try {
+                    TankerNoModel tankerNoModel = new TankerNoModel();
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String tankerid = jsonObject.getString("tanker_id");
+                        String tankerno = jsonObject.getString("tanker_no");
+
+                        tankerlist.add(tankerno);
+                       /* tankerNoModel.setTankerNo(tankerno);
+                        tankerNoModel.setTanker_id(tankerid);*/
+
+
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, tankerlist);
+
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+                            (getActivity(), android.R.layout.simple_spinner_item, tankerlist);
+
+                    dataAdapter.setDropDownViewResource
+                            (android.R.layout.simple_spinner_dropdown_item);
+
+                    tanker_num.setAdapter(dataAdapter);
+
+                } catch (Exception w) {
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //  Toast.makeText(MainActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(jsonArrayRequest);
+    }
+
+
+    private void loaddriverDetails(String tank_no) {
+        String url = "https://tws.elintwater.com/api/API/DriverDetails";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        JSONObject object = new JSONObject();
+        try {
+            //input your API parameters
+            object.put("Tanker_no", tank_no);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        // Enter the correct url for your api service site
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        JSONObject respObj = null;
+                        try {
+                            respObj = new JSONObject(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            String drivername = respObj.getString("driver_name");
+                            String driver_mob_no = respObj.getString("driver_mobile_no");
+
+                            dirver_name.setText(drivername);
+                            dri_mob_num.setText(driver_mob_no);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //resultTextView.setText("Error getting response");
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createpdf() throws IOException {
 
-        String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        File file = new File(pdfpath, "mypdf.pdf");
+        // ExportData();
+
+    //   String pdfpath = Environment.getExternalStorageDirectory()+"/TankerAllocation/DeliveryNote";
+
+       /* String dirPath = getContext().getFilesDir().getAbsolutePath() + "/TankerAllocation/DeliveryNote/";
+        // String dirPath = getContext().getFilesDir().toString() + "/images";
+        File appDir = new File(dirPath);
+        if (!appDir.exists()) {
+            appDir.mkdirs();
+        }*/
+
+       String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+        File file = new File(pdfpath, "deliverynote.pdf");
+
+        if (file.exists()) {
+            file.delete();
+        }
         OutputStream outputStream = new FileOutputStream(file);
         PdfWriter pdfWriter = new PdfWriter(file);
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         Document document = new Document(pdfDocument);
         document.setMargins(0f, 0f, 0f, 0f);
 
-
-        //pdfDocument.setDefaultPageSize(PageSize.A6);
-      /*  document.setMargins(24f,24f,32f,32f);
-       // document.setMargins(0f,0f,0f,0f);
-        Drawable drawable = getActivity().getDrawable(R.drawable.cidco);
-
-        Bitmap b = ((BitmapDrawable)drawable).getBitmap();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        b.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
-        byte [] bimapdate = byteArrayOutputStream.toByteArray();
-        ImageData imageData = ImageDataFactory.create(bimapdate);
-        Image image = new Image(imageData);
-*/
-        Paragraph paragraph = new Paragraph("Note").setBold().setFontSize(20).setTextAlignment(TextAlignment.CENTER);
+        Paragraph paragraph = new Paragraph("Delivery Note").setBold().setFontSize(20).setTextAlignment(TextAlignment.CENTER);
         float[] width = {200f, 200f};
         Table table = new Table(width);
         table.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        table.setMarginTop(20);
+        table.setMarginTop(40);
 
         table.addCell(new Cell().add(new Paragraph("Token No")));
-        table.addCell(new Cell().add(new Paragraph("")));
+        table.addCell(new Cell().add(new Paragraph(approved.getToken_no())));
 
-        /*table.addCell(new Cell().add(new Paragraph("Tanker No")));
-        table.addCell(new Cell().add(new Paragraph("")));*/
+        table.addCell(new Cell().add(new Paragraph("Consumer No")));
+        table.addCell(new Cell().add(new Paragraph(approved.getConsumer_no())));
 
         table.addCell(new Cell().add(new Paragraph("Customer Name")));
-        table.addCell(new Cell().add(new Paragraph("")));
+        table.addCell(new Cell().add(new Paragraph(approved.getCust_name())));
 
         table.addCell(new Cell().add(new Paragraph("Customer Mobile No")));
-        table.addCell(new Cell().add(new Paragraph("")));
+        table.addCell(new Cell().add(new Paragraph(approved.getCust_mob_no())));
 
-        table.addCell(new Cell().add(new Paragraph("Building Name")));
-        table.addCell(new Cell().add(new Paragraph("")));
+        table.addCell(new Cell().add(new Paragraph("Node")));
+        table.addCell(new Cell().add(new Paragraph(approved.getNode_id())));
+
+        table.addCell(new Cell().add(new Paragraph("Sector")));
+        table.addCell(new Cell().add(new Paragraph(approved.getSector_no())));
+
 
         table.addCell(new Cell().add(new Paragraph("Address")));
-        table.addCell(new Cell().add(new Paragraph("")));
+        table.addCell(new Cell().add(new Paragraph(approved.getAddress())));
 
         table.addCell(new Cell().add(new Paragraph("Quantity")));
-        table.addCell(new Cell().add(new Paragraph("")));
+        table.addCell(new Cell().add(new Paragraph(approved.getQuantity())));
 
         table.addCell(new Cell().add(new Paragraph("Approved By")));
-        table.addCell(new Cell().add(new Paragraph("")));
+        table.addCell(new Cell().add(new Paragraph(approved.getApproved_by())));
 
-        table.addCell(new Cell().add(new Paragraph("Zone")));
-        table.addCell(new Cell().add(new Paragraph("")));
 
         //second table
 
         Table table1 = new Table(width);
         table1.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        table1.setMarginTop(20);
+        table1.setMarginTop(40);
 
         table1.addCell(new Cell().add(new Paragraph("Tanker No")));
-        table1.addCell(new Cell().add(new Paragraph("")));
+        table1.addCell(new Cell().add(new Paragraph(tanker_num.getText().toString())));
 
-        table1.addCell(new Cell().add(new Paragraph("Customer Name")));
-        table1.addCell(new Cell().add(new Paragraph("")));
+        table1.addCell(new Cell().add(new Paragraph("Tanker Filling Location")));
+        table1.addCell(new Cell().add(new Paragraph(fillinglocation.getText().toString())));
 
         table1.addCell(new Cell().add(new Paragraph("Driver Name")));
-        table1.addCell(new Cell().add(new Paragraph("")));
+        table1.addCell(new Cell().add(new Paragraph(dirver_name.getText().toString())));
 
         table1.addCell(new Cell().add(new Paragraph("Driver Mobile No")));
-        table1.addCell(new Cell().add(new Paragraph("")));
+        table1.addCell(new Cell().add(new Paragraph(dri_mob_num.getText().toString())));
 
         Drawable d = getResources().getDrawable(R.drawable.cidkologo);
 
         //third table
         Table table2 = new Table(width);
         table2.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        table2.setMarginTop(20);
+        table2.setMarginTop(40);
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
         table2.addCell(new Cell().add(new Paragraph("Delivery date")));
-        table2.addCell(new Cell().add(new Paragraph(formattedDate)));
+        table2.addCell(new Cell().add(new Paragraph("")));
 
 
         String currentTime = new SimpleDateFormat("HH:mm:ss a", Locale.getDefault()).format(new Date());
 
-       // Date currentTime = Calendar.getInstance().getTime();
+        // Date currentTime = Calendar.getInstance().getTime();
         table2.addCell(new Cell().add(new Paragraph("Delivery Time")));
-        table2.addCell(new Cell().add(new Paragraph(String.valueOf(currentTime))));
+        table2.addCell(new Cell().add(new Paragraph("")));
 
-        PdfPage page = pdfDocument.addNewPage();
-        PdfCanvas pdfCanvas = new PdfCanvas(page);
-        Rectangle rectangle = new Rectangle(100, 50, 400, 130);
-        pdfCanvas.rectangle(rectangle);
-        pdfCanvas.stroke();
-        Canvas canvas = new Canvas(pdfCanvas, pdfDocument, rectangle);
-        PdfFont font = PdfFontFactory.createFont(FontConstants.TIMES_ROMAN);
-        PdfFont bold = PdfFontFactory.createFont(FontConstants.TIMES_BOLD);
+        Table table3 = new Table(width);
+        table3.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        table3.setMarginTop(40);
 
-        Paragraph custsig = new Paragraph("Customer Signature:").setMarginLeft(5);
-        // custsig.setMargin(10);
-        Paragraph custname = new Paragraph("Customer Name :").setMarginLeft(5);
-        Paragraph datetime = new Paragraph("Delivery Date and Time :").setMarginLeft(5);
-        Paragraph otp = new Paragraph("OTP :").setMarginLeft(5);
-        canvas.add(custsig);
-        canvas.add(custname);
-        canvas.add(datetime);
-        canvas.add(otp);
-        canvas.close();
+        table3.addCell(new Cell().add(new Paragraph("OTP")));
+        table3.addCell(new Cell().add(new Paragraph("")));
 
 
         Bitmap b = ((BitmapDrawable) d).getBitmap();
@@ -325,6 +484,7 @@ public class TankerDetails extends Fragment {
         document.add(table);
         document.add(table1);
         document.add(table2);
+        document.add(table3);
         //document.add((IBlockElement) rectangle);
 
 
@@ -333,12 +493,125 @@ public class TankerDetails extends Fragment {
         //second table
 
 
+
         Toast.makeText(getActivity(), "Pdf Created succesfully", Toast.LENGTH_LONG).show();
+
+        ExportData();
 
         Navigation.findNavController(getView()).navigate(R.id.action_tanker_det_to_pdfview);
 
 
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getActivity().getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+
+            case R.id.item3:
+                Toast.makeText(getActivity(), "Item 3 Selected", Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void ExportData() {
+
+        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(getContext(), "users.db");
+        Database database = devOpenHelper.getWritableDb();
+        DaoSession daoSession = new DaoMaster(database).newSession();
+
+        UserDetailsDao userDetails = daoSession.getUserDetailsDao();
+
+        List<UserDetails> allUsers = userDetails.loadAll();
+        String userid = allUsers.get(allUsers.size() -1).getUserid();
+        String zone = allUsers.get(allUsers.size()-1).getZone();
+
+        String tokenno = token_no_edt.getText().toString();
+        String drivername = dirver_name.getText().toString();
+        String driver_mon_no = dri_mob_num.getText().toString();
+        String fil_locaon = fillinglocation.getText().toString();
+        String tanker_no = tanker_num.getText().toString();
+        String Cust_name = cust_name_edt.getText().toString();
+        String cust_mob = cust_mob_no.getText().toString();
+        String sector = sector_edit.getText().toString();
+        //  String tanker_photo = token_no_edt.getText().toString();
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+
+        String currentTime = new SimpleDateFormat("HH:mm:ss a", Locale.getDefault()).format(new Date());
+
+        String url = "https://tws.elintwater.com/api/API/ExportData";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        JSONObject object = new JSONObject();
+        try {
+            //input your API parameters
+            object.put("user_id", userid);
+            object.put("token_no", tokenno);
+            object.put("driver_name", drivername);
+            object.put("driver_mob_no", driver_mon_no);
+            object.put("tanker_no", tanker_no);
+            object.put("Cust_name", Cust_name);
+            object.put("cust_mob_no", cust_mob);
+            object.put("sector_no", sector);
+           // object.put("plot_no", plot_edit.getText().toString());
+           // object.put("society_name", society_edit.getText().toString());
+            object.put("node", zone);
+            object.put("address", approved.getAddress());
+            object.put("quantity", approved.getQuantity());
+            object.put("tanker_photo", "");
+            object.put("delivery_date", formattedDate);
+            object.put("delivery_time", currentTime);
+            object.put("filling_location", fil_locaon);
+            object.put("status", "Work Allocated");
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        // Enter the correct url for your api service site
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+
+                            JSONObject movieObject = new JSONObject(response.toString());
+                            String tkno = movieObject.getString("token_no");
+                            String status = movieObject.getString("status");
+
+                            if (status.equalsIgnoreCase("Work Allocated")) {
+                              //  generatepdf.setVisibility(View.VISIBLE);
+                                Toast.makeText(getActivity(), "Export Done", Toast.LENGTH_LONG).show();
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //resultTextView.setText("Error getting response");
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+
+
+    }
+
 
     @Override
     public void onStart() {
@@ -354,62 +627,6 @@ public class TankerDetails extends Fragment {
         assetManager = getActivity().getAssets();
         //tv = (TextView) findViewById(R.id.statusTextView);
     }
-
-    public void createPdf() {
-        PDDocument document = new PDDocument();
-        PDPage page = new PDPage();
-        document.addPage(page);
-
-        // Create a new font object selecting one of the PDF base fonts
-        PDFont font = PDType1Font.HELVETICA;
-        // Or a custom font
-//      try {
-//          PDType0Font font = PDType0Font.load(document, assetManager.open("MyFontFile.TTF"));
-//      } catch(IOException e) {
-//          e.printStackTrace();
-//      }
-
-
-        PDPageContentStream contentStream;
-
-        try {
-            // Define a content stream for adding to the PDF
-            contentStream = new PDPageContentStream(document, page);
-
-            // Write Hello World in blue text
-
-            contentStream.beginText();
-           /* String text1="Token No :";
-            String text2="Tanker No :";
-            String text3="Customer Mobile No:";
-            String text4="Driver Mobile No:";
-            String text5="OTP:";
-            String text6="Delivery Date";
-            String text7="Delivery Time";*/
-            contentStream.setNonStrokingColor(15, 38, 192);
-            contentStream.setFont(font, 12);
-            contentStream.setLeading(16.0f);
-            contentStream.newLineAtOffset(100, 700);
-            contentStream.showText("");
-            contentStream.endText();
-            contentStream.close();
-
-            // Save the final pdf document to a file
-            String path = root.getAbsolutePath() + "/Download/mypdf.pdf";
-            document.save(path);
-            document.close();
-            Toast.makeText(getActivity(), "PDF generated Succesfully", Toast.LENGTH_LONG).show();
-            //tv.setText("Successfully wrote PDF to " + path);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    /**
-     * Loads an existing PDF and renders it to a Bitmap
-     */
 
 
     private boolean checkPermission() {
@@ -492,10 +709,16 @@ public class TankerDetails extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 7 && resultCode == RESULT_OK) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+
+
             tanker_photo.setImageBitmap(bitmap);
+
 
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+
+            byte[] byteArray = bytes.toByteArray();
 
             Log.e("Activity", "Pick from Camera::>>> ");
 
@@ -521,8 +744,15 @@ public class TankerDetails extends Fragment {
                 e.printStackTrace();
             }
 
+            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+            //  ExportData(encoded);
+
+            //ExportData(encoded);
+
         }
     }
+
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(getActivity())
@@ -532,5 +762,6 @@ public class TankerDetails extends Fragment {
                 .create()
                 .show();
     }
+
 
 }
