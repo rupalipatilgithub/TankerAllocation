@@ -8,6 +8,7 @@
     app:cardCornerRadius="8dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -266,6 +267,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_approvedby"
             app:layout_constraintTop_toBottomOf="@+id/val_quantity" />
+
+        <ImageButton
+            android:id="@+id/sharebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/share_icon"
+            app:layout_constraintTop_toBottomOf="@+id/val_approvedby"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="MissingConstraints" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

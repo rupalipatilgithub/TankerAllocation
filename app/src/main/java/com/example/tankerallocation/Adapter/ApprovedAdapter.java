@@ -1,10 +1,12 @@
 package com.example.tankerallocation.Adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,8 +25,7 @@ import java.util.List;
 public class ApprovedAdapter extends RecyclerView.Adapter<ApprovedAdapter.PendinglistViewHolder> {
 
 
-
-  List<Approved> results;
+    List<Approved> results;
 
 
     public ApprovedAdapter(Activity activity, List<Approved> list) {
@@ -38,7 +39,9 @@ public class ApprovedAdapter extends RecyclerView.Adapter<ApprovedAdapter.Pendin
         View lmcItem = inflater.inflate(R.layout.card_layout, parent, false);
         ApprovedAdapter.PendinglistViewHolder pendinglistViewHolder = new ApprovedAdapter.PendinglistViewHolder(lmcItem);
         Date date = Calendar.getInstance().getTime();
-       // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+
 
         return pendinglistViewHolder;
     }
@@ -48,16 +51,40 @@ public class ApprovedAdapter extends RecyclerView.Adapter<ApprovedAdapter.Pendin
         attachClickListeners(relativeLayout, position);
 
 
-            holder.token_no.setText(results.get(position).getToken_no());
-            holder.val_custname.setText(results.get(position).getCust_name());
-            holder.val_custmob_no.setText(results.get(position).getCust_mob_no());
-            holder.val_secotr.setText(results.get(position).getSector_no());
-            holder.val_plotno.setText(results.get(position).getAddress());
-            // holder.val_bul_name.setText(results.get(position).getSociety_name());
-            holder.val_quanity.setText(results.get(position).getQuantity());
-            holder.val_zone.setText(results.get(position).getNode_id());
-            holder.val_approvedby.setText(results.get(position).getApproved_by());
-            holder.val_consumer_no.setText(results.get(position).getConsumer_no());
+        holder.token_no.setText(results.get(position).getToken_no());
+        holder.val_custname.setText(results.get(position).getCust_name());
+        holder.val_custmob_no.setText(results.get(position).getCust_mob_no());
+        holder.val_secotr.setText(results.get(position).getSector_no());
+        holder.val_plotno.setText(results.get(position).getAddress());
+        // holder.val_bul_name.setText(results.get(position).getSociety_name());
+        holder.val_quanity.setText(results.get(position).getQuantity());
+        holder.val_zone.setText(results.get(position).getNode_id());
+        holder.val_approvedby.setText(results.get(position).getApproved_by());
+        holder.val_consumer_no.setText(results.get(position).getConsumer_no());
+        String senddata = "Toaken No:" +results.get(position).getToken_no() +""+
+                "\nConsumer No.:"+results.get(position).getConsumer_no()+""+
+                "\nConsumer Name:"+results.get(position).getCust_name()+""+
+                "\nConsumer Mob No:"+results.get(position).getCust_mob_no()+""+
+                "\nNode:"+results.get(position).getNode_id()+""+
+                "\nSector:"+results.get(position).getSector_no()+""+
+                "\nAddress:"+results.get(position).getAddress()+""+
+                "\nQuantity:"+results.get(position).getQuantity();
+
+
+        holder.sharebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT,senddata);
+                sendIntent.setType("text/plain");
+                sendIntent.setPackage("com.whatsapp");
+                v.getContext().startActivity(sendIntent);
+
+            }
+        });
+
 
 
 
@@ -66,13 +93,11 @@ public class ApprovedAdapter extends RecyclerView.Adapter<ApprovedAdapter.Pendin
     private void attachClickListeners(RelativeLayout relativeLayout, int position) {
 
         relativeLayout.setOnClickListener(event -> {
-            Bundle bundle=new Bundle();
+            Bundle bundle = new Bundle();
             bundle.putSerializable("approved", results.get(position));
-            Navigation.findNavController(relativeLayout).navigate(R.id.tanker_det,bundle);
+            Navigation.findNavController(relativeLayout).navigate(R.id.tanker_det, bundle);
 
         });
-
-
 
 
     }
@@ -89,8 +114,8 @@ public class ApprovedAdapter extends RecyclerView.Adapter<ApprovedAdapter.Pendin
     public class PendinglistViewHolder extends RecyclerView.ViewHolder {
         private TextView token;
         private TextView token_no;
-       // private TextView tanker;
-       // private TextView tanker_no;
+        // private TextView tanker;
+        // private TextView tanker_no;
         private TextView cust_name;
         private TextView val_custname;
         private TextView build_name;
@@ -107,6 +132,7 @@ public class ApprovedAdapter extends RecyclerView.Adapter<ApprovedAdapter.Pendin
         private TextView val_custmob_no;
         private TextView val_consumer_no;
         private TextView tv_consumer_no;
+        private ImageButton sharebtn;
 
 
         public PendinglistViewHolder(@NonNull View itemView) {
@@ -129,6 +155,7 @@ public class ApprovedAdapter extends RecyclerView.Adapter<ApprovedAdapter.Pendin
             val_custmob_no = itemView.findViewById(R.id.val_cus_mob_no);
             tv_consumer_no = itemView.findViewById(R.id.tv_consumer_no);
             val_consumer_no = itemView.findViewById(R.id.val_consumer_no);
+            sharebtn = itemView.findViewById(R.id.sharebtn);
         }
 
     }

@@ -206,11 +206,8 @@ public class TankerDetails extends Fragment {
             String mobile_no = dri_mob_num.getText().toString();
             String drivername = dirver_name.getText().toString();
             if (!tan_no.isEmpty() && !mobile_no.isEmpty() && !drivername.isEmpty()) {
-                try {
-                    createpdf();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                // createpdf();
+                ExportData();
             } else {
                 Snackbar.make(getView(), getString(R.string.empty_field_error), Snackbar.LENGTH_LONG).show();
             }
@@ -496,9 +493,9 @@ public class TankerDetails extends Fragment {
 
         Toast.makeText(getActivity(), "Pdf Created succesfully", Toast.LENGTH_LONG).show();
 
-        ExportData();
+        //ExportData();
 
-        Navigation.findNavController(getView()).navigate(R.id.action_tanker_det_to_pdfview);
+      // Navigation.findNavController(getView()).navigate(R.id.action_tanker_det_to_pdfview);
 
 
     }
@@ -594,6 +591,8 @@ public class TankerDetails extends Fragment {
                             if (status.equalsIgnoreCase("Work Allocated")) {
                               //  generatepdf.setVisibility(View.VISIBLE);
                                 Toast.makeText(getActivity(), "Export Done", Toast.LENGTH_LONG).show();
+                                Navigation.findNavController(getView()).navigate(R.id.action_tanker_det_to_allocationList);
+
                             }
 
 
