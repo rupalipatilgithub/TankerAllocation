@@ -1,5 +1,6 @@
 package com.example.tankerallocation.UI.Authentication;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -42,6 +43,7 @@ public class Login extends Fragment {
     private TextView forgotpass;
     APIService apiService;
     String status;
+    ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,6 +97,10 @@ public class Login extends Fragment {
     public void CheckLogin(String email, String pass) {
         String android_id = Settings.Secure.getString(getContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
+
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please Wait....");
+        progressDialog.show();
         JsonObject postParam = new JsonObject();
         try {
             postParam.addProperty("email_id", email);
@@ -116,6 +122,7 @@ public class Login extends Fragment {
                         Log.d("response", "Getting response from server: " + response);
 
                         JSONObject movieObject = null;
+                        progressDialog.dismiss();
                         try {
                             movieObject = new JSONObject(String.valueOf(response.body()));
                         } catch (JSONException e) {
@@ -159,6 +166,7 @@ public class Login extends Fragment {
 
 
                         } catch (JSONException e) {
+                            progressDialog.dismiss();
                             e.printStackTrace();
                         }
 
