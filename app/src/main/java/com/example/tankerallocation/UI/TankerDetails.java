@@ -206,8 +206,12 @@ public class TankerDetails extends Fragment {
             String mobile_no = dri_mob_num.getText().toString();
             String drivername = dirver_name.getText().toString();
             if (!tan_no.isEmpty() && !mobile_no.isEmpty() && !drivername.isEmpty()) {
-                // createpdf();
-                ExportData();
+                try {
+                    createpdf();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             } else {
                 Snackbar.make(getView(), getString(R.string.empty_field_error), Snackbar.LENGTH_LONG).show();
             }
@@ -365,7 +369,7 @@ public class TankerDetails extends Fragment {
 
         // ExportData();
 
-    //   String pdfpath = Environment.getExternalStorageDirectory()+"/TankerAllocation/DeliveryNote";
+        //   String pdfpath = Environment.getExternalStorageDirectory()+"/TankerAllocation/DeliveryNote";
 
        /* String dirPath = getContext().getFilesDir().getAbsolutePath() + "/TankerAllocation/DeliveryNote/";
         // String dirPath = getContext().getFilesDir().toString() + "/images";
@@ -374,128 +378,130 @@ public class TankerDetails extends Fragment {
             appDir.mkdirs();
         }*/
 
-       String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        File file = new File(pdfpath, "deliverynote.pdf");
-
-        if (file.exists()) {
-            file.delete();
-        }
-        OutputStream outputStream = new FileOutputStream(file);
-        PdfWriter pdfWriter = new PdfWriter(file);
-        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-        Document document = new Document(pdfDocument);
-        document.setMargins(0f, 0f, 0f, 0f);
-
-        Paragraph paragraph = new Paragraph("Delivery Note").setBold().setFontSize(20).setTextAlignment(TextAlignment.CENTER);
-        float[] width = {200f, 200f};
-        Table table = new Table(width);
-        table.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        table.setMarginTop(40);
-
-        table.addCell(new Cell().add(new Paragraph("Token No")));
-        table.addCell(new Cell().add(new Paragraph(approved.getToken_no())));
-
-        table.addCell(new Cell().add(new Paragraph("Consumer No")));
-        table.addCell(new Cell().add(new Paragraph(approved.getConsumer_no())));
-
-        table.addCell(new Cell().add(new Paragraph("Customer Name")));
-        table.addCell(new Cell().add(new Paragraph(approved.getCust_name())));
-
-        table.addCell(new Cell().add(new Paragraph("Customer Mobile No")));
-        table.addCell(new Cell().add(new Paragraph(approved.getCust_mob_no())));
-
-        table.addCell(new Cell().add(new Paragraph("Node")));
-        table.addCell(new Cell().add(new Paragraph(approved.getNode_id())));
-
-        table.addCell(new Cell().add(new Paragraph("Sector")));
-        table.addCell(new Cell().add(new Paragraph(approved.getSector_no())));
+        String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+        File file = new File(pdfpath, "deliver_not.pdf");
+        file.createNewFile();
 
 
-        table.addCell(new Cell().add(new Paragraph("Address")));
-        table.addCell(new Cell().add(new Paragraph(approved.getAddress())));
 
-        table.addCell(new Cell().add(new Paragraph("Quantity")));
-        table.addCell(new Cell().add(new Paragraph(approved.getQuantity())));
+          //  OutputStream outputStream = new FileOutputStream(file);
+            PdfWriter pdfWriter = new PdfWriter(file);
+            PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+            Document document = new Document(pdfDocument);
+            document.setMargins(0f, 0f, 0f, 0f);
 
-        table.addCell(new Cell().add(new Paragraph("Approved By")));
-        table.addCell(new Cell().add(new Paragraph(approved.getApproved_by())));
+            Paragraph paragraph = new Paragraph("Delivery Note").setBold().setFontSize(20).setTextAlignment(TextAlignment.CENTER);
+            float[] width = {200f, 200f};
+            Table table = new Table(width);
+            table.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            table.setMarginTop(40);
 
+            table.addCell(new Cell().add(new Paragraph("Token No")));
+            table.addCell(new Cell().add(new Paragraph(approved.getToken_no())));
+
+            table.addCell(new Cell().add(new Paragraph("Consumer No")));
+            table.addCell(new Cell().add(new Paragraph(approved.getConsumer_no())));
+
+            table.addCell(new Cell().add(new Paragraph("Node")));
+            table.addCell(new Cell().add(new Paragraph(approved.getNode_id())));
+
+            table.addCell(new Cell().add(new Paragraph("Sector")));
+            table.addCell(new Cell().add(new Paragraph(approved.getSector_no())));
+
+            table.addCell(new Cell().add(new Paragraph("Address")));
+            table.addCell(new Cell().add(new Paragraph(approved.getAddress())));
+
+            table.addCell(new Cell().add(new Paragraph("Consumer Name")));
+            table.addCell(new Cell().add(new Paragraph(approved.getCust_name())));
+
+            table.addCell(new Cell().add(new Paragraph("Consumer Mobile No")));
+            table.addCell(new Cell().add(new Paragraph(approved.getCust_mob_no())));
+
+            table.addCell(new Cell().add(new Paragraph("Quantity")));
+            table.addCell(new Cell().add(new Paragraph(approved.getQuantity())));
+
+            table.addCell(new Cell().add(new Paragraph("Approved By")));
+            table.addCell(new Cell().add(new Paragraph(approved.getApproved_by())));
+
+
+            //second table
+
+            Table table1 = new Table(width);
+            table1.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            table1.setMarginTop(40);
+
+            table1.addCell(new Cell().add(new Paragraph("Tanker No")));
+            table1.addCell(new Cell().add(new Paragraph(tanker_num.getText().toString())));
+
+            table1.addCell(new Cell().add(new Paragraph("Tanker Filling Location")));
+            table1.addCell(new Cell().add(new Paragraph(fillinglocation.getText().toString())));
+
+            table1.addCell(new Cell().add(new Paragraph("Driver Name")));
+            table1.addCell(new Cell().add(new Paragraph(dirver_name.getText().toString())));
+
+            table1.addCell(new Cell().add(new Paragraph("Driver Mobile No")));
+            table1.addCell(new Cell().add(new Paragraph(dri_mob_num.getText().toString())));
+
+            Drawable d = getResources().getDrawable(R.drawable.cidkologo);
+
+            //third table
+            Table table2 = new Table(width);
+            table2.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            table2.setMarginTop(40);
+
+            Date c = Calendar.getInstance().getTime();
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+            String formattedDate = df.format(c);
+            table2.addCell(new Cell().add(new Paragraph("Delivery date")));
+            table2.addCell(new Cell().add(new Paragraph("")));
+
+
+            String currentTime = new SimpleDateFormat("HH:mm:ss a", Locale.getDefault()).format(new Date());
+
+            // Date currentTime = Calendar.getInstance().getTime();
+            table2.addCell(new Cell().add(new Paragraph("Delivery Time")));
+            table2.addCell(new Cell().add(new Paragraph("")));
+
+            Table table3 = new Table(width);
+            table3.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            table3.setMarginTop(40);
+
+            table3.addCell(new Cell().add(new Paragraph("OTP")));
+            table3.addCell(new Cell().add(new Paragraph("")));
+
+
+            Bitmap b = ((BitmapDrawable) d).getBitmap();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            b.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            byte[] bimapdate = byteArrayOutputStream.toByteArray();
+            ImageData imageData = ImageDataFactory.create(bimapdate);
+            Image image = new Image(imageData);
+            image.scaleAbsolute(100, 80);
+            image.setMarginTop(20);
+            image.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            document.add(image);
+            document.add(paragraph);
+            document.add(table);
+            document.add(table1);
+            document.add(table2);
+            document.add(table3);
+            //document.add((IBlockElement) rectangle);
+
+
+            document.close();
+
+
+       // }
 
         //second table
-
-        Table table1 = new Table(width);
-        table1.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        table1.setMarginTop(40);
-
-        table1.addCell(new Cell().add(new Paragraph("Tanker No")));
-        table1.addCell(new Cell().add(new Paragraph(tanker_num.getText().toString())));
-
-        table1.addCell(new Cell().add(new Paragraph("Tanker Filling Location")));
-        table1.addCell(new Cell().add(new Paragraph(fillinglocation.getText().toString())));
-
-        table1.addCell(new Cell().add(new Paragraph("Driver Name")));
-        table1.addCell(new Cell().add(new Paragraph(dirver_name.getText().toString())));
-
-        table1.addCell(new Cell().add(new Paragraph("Driver Mobile No")));
-        table1.addCell(new Cell().add(new Paragraph(dri_mob_num.getText().toString())));
-
-        Drawable d = getResources().getDrawable(R.drawable.cidkologo);
-
-        //third table
-        Table table2 = new Table(width);
-        table2.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        table2.setMarginTop(40);
-
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-        String formattedDate = df.format(c);
-        table2.addCell(new Cell().add(new Paragraph("Delivery date")));
-        table2.addCell(new Cell().add(new Paragraph("")));
-
-
-        String currentTime = new SimpleDateFormat("HH:mm:ss a", Locale.getDefault()).format(new Date());
-
-        // Date currentTime = Calendar.getInstance().getTime();
-        table2.addCell(new Cell().add(new Paragraph("Delivery Time")));
-        table2.addCell(new Cell().add(new Paragraph("")));
-
-        Table table3 = new Table(width);
-        table3.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        table3.setMarginTop(40);
-
-        table3.addCell(new Cell().add(new Paragraph("OTP")));
-        table3.addCell(new Cell().add(new Paragraph("")));
-
-
-        Bitmap b = ((BitmapDrawable) d).getBitmap();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        b.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] bimapdate = byteArrayOutputStream.toByteArray();
-        ImageData imageData = ImageDataFactory.create(bimapdate);
-        Image image = new Image(imageData);
-        image.scaleAbsolute(100, 80);
-        image.setMarginTop(20);
-        image.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        document.add(image);
-        document.add(paragraph);
-        document.add(table);
-        document.add(table1);
-        document.add(table2);
-        document.add(table3);
-        //document.add((IBlockElement) rectangle);
-
-
-        document.close();
-
-        //second table
-
 
 
         Toast.makeText(getActivity(), "Pdf Created succesfully", Toast.LENGTH_LONG).show();
 
-        //ExportData();
 
-      // Navigation.findNavController(getView()).navigate(R.id.action_tanker_det_to_pdfview);
+       // ExportData();
+
+      Navigation.findNavController(getView()).navigate(R.id.action_tanker_det_to_pdfview);
 
 
     }
@@ -589,9 +595,9 @@ public class TankerDetails extends Fragment {
                             String status = movieObject.getString("status");
 
                             if (status.equalsIgnoreCase("Work Allocated")) {
-                              //  generatepdf.setVisibility(View.VISIBLE);
+                                 //generatepdf.setVisibility(View.VISIBLE);
                                 Toast.makeText(getActivity(), "Export Done", Toast.LENGTH_LONG).show();
-                                Navigation.findNavController(getView()).navigate(R.id.action_tanker_det_to_allocationList);
+                               // Navigation.findNavController(getView()).navigate(R.id.action_tanker_det_to_allocationList);
 
                             }
 
