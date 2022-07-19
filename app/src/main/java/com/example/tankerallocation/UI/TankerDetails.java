@@ -499,7 +499,7 @@ public class TankerDetails extends Fragment {
         Toast.makeText(getActivity(), "Pdf Created succesfully", Toast.LENGTH_LONG).show();
 
 
-       // ExportData();
+        ExportData();
 
       Navigation.findNavController(getView()).navigate(R.id.action_tanker_det_to_pdfview);
 

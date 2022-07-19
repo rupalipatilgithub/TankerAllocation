@@ -85,6 +85,8 @@ public class DisplaySuccessDelivery extends Fragment {
     private TextView approvedby_tv;
     private TextView val_approvedby;
     private TextView val_tanker_filling_loc;
+    private TextView tv_consumer_no;
+    private TextView val_consumer_no;
     private Button deliverynote;
     Approved approved;
 
@@ -137,6 +139,8 @@ public class DisplaySuccessDelivery extends Fragment {
         val_driver_mob = view.findViewById(R.id.val_driverno);
         tv_dliverydate = view.findViewById(R.id.tv_deliverydate);
         val_deliverydat = view.findViewById(R.id.val_deliverydate);
+        tv_consumer_no = view.findViewById(R.id.tv_consumerno);
+        val_consumer_no = view.findViewById(R.id.val_consumer_no);
         deliverynote = view.findViewById(R.id.btnviewdeliverynote);
 
 
@@ -163,6 +167,7 @@ public class DisplaySuccessDelivery extends Fragment {
         val_dri_name.setText(approved.getDrivername());
         val_driver_mob.setText(approved.getDrivermob_no());
         val_tanker_filling_loc.setText(approved.getDrivermob_no());
+        val_consumer_no.setText(approved.getConsumer_no());
 
 
         Calendar c = Calendar.getInstance();

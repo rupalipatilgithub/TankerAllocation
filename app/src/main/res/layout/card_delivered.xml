@@ -45,29 +45,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints" />
 
-            <TextView
-                android:id="@+id/tv_cust_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="5dp"
-                android:text="@string/Cust_name"
-                app:layout_constraintEnd_toStartOf="@id/val_cus_name"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_toker_no" />
 
-            <TextView
-                android:id="@+id/val_cus_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_cust_name"
-                app:layout_constraintTop_toBottomOf="@+id/tv_toker_no" />
 
             <TextView
                 android:id="@+id/tv_consumerno"
@@ -79,7 +57,7 @@
                 android:text="@string/consumerno"
                 app:layout_constraintEnd_toStartOf="@id/val_consumerno"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_cust_name" />
+                app:layout_constraintTop_toBottomOf="@+id/val_token_no" />
 
             <TextView
                 android:id="@+id/val_consumerno"
@@ -90,7 +68,7 @@
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_consumerno"
-                app:layout_constraintTop_toBottomOf="@+id/tv_cust_name" />
+                app:layout_constraintTop_toBottomOf="@+id/val_token_no" />
 
 
             <TextView
@@ -117,29 +95,51 @@
                 app:layout_constraintTop_toBottomOf="@+id/val_consumerno" />
 
             <TextView
-                android:id="@+id/tv_date"
+                android:id="@+id/tv_cust_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginBottom="10dp"
+                android:text="@string/Cust_name"
+                app:layout_constraintEnd_toStartOf="@id/val_cus_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/val_building_name" />
+
+            <TextView
+                android:id="@+id/val_cus_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_cust_name"
+                app:layout_constraintTop_toBottomOf="@+id/val_building_name" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="5dp"
                 android:text="@string/deliverydate"
                 app:layout_constraintEnd_toStartOf="@id/val_deiverydate"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_building_name" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_cust_name" />
 
             <TextView
                 android:id="@+id/val_deiverydate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_date"
-                app:layout_constraintTop_toBottomOf="@+id/tv_building_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_cust_name"
                 tools:ignore="MissingConstraints" />
 
 

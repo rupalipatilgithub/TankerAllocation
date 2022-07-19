@@ -55,6 +55,8 @@ public class DeliverdStatus extends Fragment {
         StartAsyncTask();
         return view;
     }
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {

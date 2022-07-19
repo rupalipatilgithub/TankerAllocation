@@ -72,8 +72,8 @@ public class PdfViewer extends Fragment {
         printpdf = vIew.findViewById(R.id.printpdf);
         home = vIew.findViewById(R.id.home);
         String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        File file = new File(pdfpath, "mypdf.pdf");
-         file1 = new File(pdfpath, "mypdf.pdf");
+        File file = new File(pdfpath, "deliver_not.pdf");
+         file1 = new File(pdfpath, "deliver_not.pdf");
         pdfView.fromFile(file1).load();
 
         home.setOnClickListener(new View.OnClickListener() {

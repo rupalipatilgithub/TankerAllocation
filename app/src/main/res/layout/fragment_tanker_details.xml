@@ -55,62 +55,6 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inputlayout_cust_name"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="@string/Cust_name"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:textColorHint="@color/purple_500"
-        app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
-        app:layout_constraintTop_toBottomOf="@+id/inputlayout_token_number"
-        app:startIconDrawable="@drawable/driver_icon"
-        app:startIconTint="@color/stellar_explorer"
-        tools:ignore="MissingConstraints">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_custname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:clickable="false"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:textColor="@color/stellar_explorer" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inputlayout_cust_mob_no"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="@string/Cust_mobileno"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:textColorHint="@color/purple_500"
-        app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
-        app:layout_constraintTop_toBottomOf="@+id/inputlayout_cust_name"
-        app:startIconDrawable="@drawable/phone_icon"
-        app:startIconTint="@color/stellar_explorer"
-        tools:ignore="MissingConstraints">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_cust_mob_no"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:clickable="false"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:textColor="@color/stellar_explorer" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -124,7 +68,7 @@
         android:paddingEnd="16dp"
         android:textColorHint="@color/purple_500"
         app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
-        app:layout_constraintTop_toBottomOf="@+id/inputlayout_cust_mob_no"
+        app:layout_constraintTop_toBottomOf="@+id/inputlayout_token_number"
         app:startIconDrawable="@drawable/phone_icon"
         app:startIconTint="@color/stellar_explorer"
         tools:ignore="MissingConstraints">
@@ -257,6 +201,65 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputlayout_cust_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/Cust_name"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColorHint="@color/purple_500"
+        app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
+        app:layout_constraintTop_toBottomOf="@+id/inputlayout_buildingName"
+        app:startIconDrawable="@drawable/driver_icon"
+        app:startIconTint="@color/stellar_explorer"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_custname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:textColor="@color/stellar_explorer" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputlayout_cust_mob_no"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/Cust_mobileno"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColorHint="@color/purple_500"
+        app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
+        app:layout_constraintTop_toBottomOf="@+id/inputlayout_cust_name"
+        app:startIconDrawable="@drawable/phone_icon"
+        app:startIconTint="@color/stellar_explorer"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_cust_mob_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:textColor="@color/stellar_explorer" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputlayout_quantity"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -268,7 +271,7 @@
         android:paddingEnd="16dp"
         android:textColorHint="@color/purple_500"
         app:boxStrokeColor="@color/mtrl_textinput_default_box_stroke_color"
-        app:layout_constraintTop_toBottomOf="@+id/inputlayout_buildingName"
+        app:layout_constraintTop_toBottomOf="@+id/inputlayout_cust_mob_no"
         app:startIconDrawable="@drawable/quantity_icon"
         app:startIconTint="@color/stellar_explorer"
         tools:ignore="MissingConstraints">
